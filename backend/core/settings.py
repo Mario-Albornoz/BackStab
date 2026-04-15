@@ -48,6 +48,9 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
+    "apps.instagram",
+    "apps.users",
+    "apps.common",
 ]
 
 MIDDLEWARE = [
