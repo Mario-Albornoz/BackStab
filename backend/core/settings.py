@@ -29,10 +29,14 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = True
+BACKSTAB_DESKTOP = os.getenv("BACKSTAB_DESKTOP", "0") == "1"
 
-CORS_ALLOWED_ORIGIN = [
-    "http://loacalhost:5173",
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
 ]
+if BACKSTAB_DESKTOP:
+    # Electron loads from a file:// origin, so allow cross-origin API calls.
+    CORS_ALLOW_ALL_ORIGINS = True
 ALLOWED_HOSTS = []
 
 
@@ -52,6 +56,8 @@ INSTALLED_APPS = [
     "apps.common",
     "apps.users",
 ]
+
+AUTH_USER_MODEL = "users.User"
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",

@@ -44,7 +44,7 @@ Thumbs.db        # Windows
 .idea/
 *.swp
 *.swo
-
+.cursor/
 # ========================
 # Logs
 # ========================

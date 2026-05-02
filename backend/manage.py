@@ -3,10 +3,14 @@
 
 import os
 import sys
+from pathlib import Path
 
 
 def main():
     """Run administrative tasks."""
+    # Keep Django test discovery rooted in the backend project directory,
+    # even when manage.py is invoked from the repository root.
+    os.chdir(Path(__file__).resolve().parent)
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
     try:
         from django.core.management import execute_from_command_line
