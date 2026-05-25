@@ -20,24 +20,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(BASE_DIR / ".env")
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
+# Generate a new key with:
+# python -c "import secrets; print(secrets.token_urlsafe(50))"
+SECRET_KEY = os.getenv("SECRET_KEY", "dev-fallback-key-replace-in-production")
 
+DEBUG = os.getenv("DEBUG", "true").lower() == "true"
 
-# run this command to generate a new key when cloning the enviorment
-# python -c "from django.core.utils.crypto import get_random_string; print(get_random_string(50))"
-SECRET_KEY = os.getenv("SECRET_KEY")
-
-DEBUG = True
-BACKSTAB_DESKTOP = os.getenv("BACKSTAB_DESKTOP", "0") == "1"
+_extra_hosts = [h for h in os.getenv("ALLOWED_HOSTS", "").split(",") if h]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", *_extra_hosts]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "http://localhost:8080",
 ]
-if BACKSTAB_DESKTOP:
-    # Electron loads from a file:// origin, so allow cross-origin API calls.
-    CORS_ALLOW_ALL_ORIGINS = True
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -112,7 +107,9 @@ WSGI_APPLICATION = "core.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        # In Docker, BACKSTAB_DATA_DIR is set to a mounted volume path.
+        # Locally it falls back to the backend directory.
+        "NAME": Path(os.getenv("BACKSTAB_DATA_DIR", str(BASE_DIR))) / "db.sqlite3",
     }
 }
 
