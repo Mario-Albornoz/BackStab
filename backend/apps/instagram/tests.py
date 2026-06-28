@@ -18,12 +18,11 @@ class InstagramTrackingApiTests(TestCase):
     def _followers_file(self, usernames: list[str], filename: str = "followers.json"):
         payload = [
             {
-                "title": "",
+                "title": username,
                 "media_list_data": [],
                 "string_list_data": [
                     {
                         "href": f"https://www.instagram.com/{username}",
-                        "value": username,
                         "timestamp": 1753815733,
                     }
                 ],
@@ -105,7 +104,9 @@ class InstagramTrackingApiTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data["total_followers"], 1)
         usernames = set(
-            Followers.objects.filter(user=self.user).values_list("follower__username", flat=True)
+            Followers.objects.filter(user=self.user).values_list(
+                "follower__username", flat=True
+            )
         )
         self.assertEqual(usernames, {"carol"})
 

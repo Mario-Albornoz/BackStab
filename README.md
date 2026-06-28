@@ -29,7 +29,18 @@ Make sure you have the following installed before starting:
 
 ---
 
-## Getting Started
+## Running Containers
+### 1. How to run the cointainer for use
+```bash
+docker compose -f docker-compose.yml up -d
+```
+
+
+### 2. Open browser
+
+Open your broswer at localhost:8080/
+
+## Getting Started Local Development
 
 ### 1. Backend Setup
 
